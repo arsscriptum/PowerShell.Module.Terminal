@@ -29,11 +29,14 @@ function Invoke-Terminal{
     [CmdletBinding(SupportsShouldProcess)]
     Param
     (
-         [Parameter(Mandatory=$true,Position=0)]
+         [Parameter(Mandatory=$false,Position=0)]
          [ValidateSet("T1", "T2", "T3", "T1A", "T2A", "T3A", "T1T3", "T1T3A", "T1T2", "T1T2A", "T1T1" ,"Q1" ,"Q2" )]
          $Mode
     )   
     try{
+        if ($PSBoundParameters.ContainsKey('Mode') -eq $False)  {
+            $Mode="T1"
+        }
 
         $ExeTerminal='C:\Users\radic\AppData\Local\Microsoft\WindowsApps\wt.exe'
         $ExecName = (Get-Item -Path $ExeTerminal).Name
@@ -129,11 +132,17 @@ if($Setup){
     Write-Host "Path         `t" -NoNewLine -f DarkYellow;  Write-Host "$Path" -f Gray 
     Write-Host "Mode         `t" -NoNewLine -f DarkYellow;  Write-Host "$Mode" -f Gray 
     if((Get-Item -Path $Script:RegistryPathWinTerminal -ErrorAction ignore) -eq $null){
-        New-Item -Path $Script:RegistryPathWinTerminal -Value  -Force
+        New-Item -Path $Script:RegistryPathWinTerminal -Value "$Path" -Force
     }
 
     $null=New-ItemProperty -Path $Script:RegistryPathWinTerminal -Name "StartingDirectory" -Value $Path -Force   
     $null=New-ItemProperty -Path $Script:RegistryPathWinTerminal -Name "UseRegistryStartingDirectory" -Value "1" -Force   
-    Invoke-Terminal $Mode       
+
+    if(($Mode -ne $Null) -And($Mode -ne '')){
+        Invoke-Terminal $Mode    
+    }else{
+        Invoke-Terminal
+    }
+    
 }
 

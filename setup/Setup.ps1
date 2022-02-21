@@ -96,7 +96,7 @@ function InitializeCommands{
     $ValueCmd="pwsh.exe -w Minimized -nol -nop -c `"& { Start-Process -FilePath `"pwsh.exe`" -ArgumentList ' -w Minimized -nol -nop -c `"& { $InvokeTermScript"
     
     write-host "InitializeCommands`nCmd: $ValueCmd " -f DarkBlue
-    $IconPath = (Resolve-Path -Path "$PSScriptRoot\..\ico").Path
+    $IconPath = "C:\DOCUMENTS\PowerShell\Module-Development\PowerShell.Module.Terminal\ico"
     $Index = 1
     $TerminalCommands = [System.Collections.ArrayList]::new()
     write-verbose "Initialize-Commands";
@@ -183,15 +183,15 @@ function CreateCommands{
         $ico = $cmd.Icon
         Write-verbose "$ShellCmdPath" 
         Write-verbose "$CommandPath" 
-        $null=New-Item -Path $ShellCmdPath -Value "" -Force
-        $null=New-Item -Path $CommandPath -Value $exec -Force 
+        $null=New-Item -Path $ShellCmdPath -Value "-" -Force
+        $null=New-Item -Path $CommandPath -Value "$exec" -Force 
          if($AddSeparator){$null=New-RegistryValue $ShellCmdPath "CommandFlags" 00000040 dword ; continue ;}
         $null=New-RegistryValue $ShellCmdPath "Icon" $ico String
         $null=New-RegistryValue $ShellCmdPath "MUIVerb" $verb String
         write-host -f DarkGreen "ok";
     }
 
-    CreateMenu -SubCommands "$SubCommands" -Verb "Windows &Terminal" -Icon "C:\Data\Pictures\icones\Utilities-Terminal.ico" 
+    CreateMenu -SubCommands "$SubCommands" -Verb "Windows &Terminal" -Icon "C:\DOCUMENTS\PowerShell\Module-Development\PowerShell.Module.Terminal\ico\WOOD-TERMINAL.ico" 
 }
 
 
