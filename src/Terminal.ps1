@@ -19,6 +19,13 @@ Param
 )  
 
 
+$IsBuilding = Get-BuildingFlag
+if($IsBuilding){
+    Write-Host "===============================================================================" -f DarkRed
+    Write-Host "CURRENTLY BUILDING - BAILING OUT" -f DarkYellow;
+    Write-Host "===============================================================================" -f DarkRed     
+    return
+}
 
 $Script:GitProfile = 'Git'
 $Script:PwshCoreProfile = 'Core'
@@ -38,7 +45,7 @@ function Invoke-Terminal{
             $Mode="T1"
         }
 
-        $ExeTerminal='C:\Users\radic\AppData\Local\Microsoft\WindowsApps\wt.exe'
+        $ExeTerminal="C:\Users\$ENV:USERNAME\AppData\Local\Microsoft\WindowsApps\wt.exe"
         $ExecName = (Get-Item -Path $ExeTerminal).Name
         $ArgumentList = ''
         $Verb = ''
@@ -98,7 +105,7 @@ function Setup{
         if(-not(Test-Path -Path $Script:RegistryPathWinTerminal)){
             New-Item -Path $Script:RegistryPathWinTerminal -Force | out-null
         }
-        $SettingsFile = 'C:\Users\radic\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json'
+        $SettingsFile = "C:\Users\$ENV:USERNAME\AppData\Local\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
         if((Get-Item -Path $Script:RegistryPathWinTerminal -ErrorAction ignore) -eq $null){
             $null=New-Item -Path $Script:RegistryPathWinTerminal -Value 'PowerShellCore' -Force
         }

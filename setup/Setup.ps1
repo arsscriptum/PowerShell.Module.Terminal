@@ -93,7 +93,8 @@ function InitializeCommands{
         [parameter(Position=0,Mandatory=$true)]
         [ValidateNotNullOrEmpty()]$InvokeTermScript
     ) 
-    $ValueCmd="pwsh.exe -w Minimized -nol -nop -c `"& { Start-Process -FilePath `"pwsh.exe`" -ArgumentList ' -w Minimized -nol -nop -c `"& { $InvokeTermScript"
+    $PwshExe = (Get-Command 'pwsh.exe').Source
+    $ValueCmd="$PwshExe -w Minimized -nol -nop -c `"& { Start-Process -FilePath `"pwsh.exe`" -ArgumentList ' -w Minimized -nol -nop -c `"& { $InvokeTermScript"
     
     write-host "InitializeCommands`nCmd: $ValueCmd " -f DarkBlue
     $IconPath = "C:\DOCUMENTS\PowerShell\Module-Development\PowerShell.Module.Terminal\ico"
