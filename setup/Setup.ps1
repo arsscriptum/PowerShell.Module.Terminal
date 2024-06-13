@@ -103,7 +103,7 @@ function InitializeCommands{
     $ValueCmd="$PwshExe -w Minimized -nol -nop -c `"& { Start-Process -FilePath `"pwsh.exe`" -ArgumentList ' -w Minimized -nol -nop -c `"& { $InvokeTermScript"
     
     write-host "InitializeCommands`nCmd: $ValueCmd " -f DarkBlue
-    $IconPath = "C:\DOCUMENTS\PowerShell\Module-Development\PowerShell.Module.Terminal\ico"
+    $IconPath = "C:\Users\guillaumep\Documents\PowerShell\Module-Development\PowerShell.Module.Terminal\ico"
     $Index = 1
     $TerminalCommands = [System.Collections.ArrayList]::new()
     write-verbose "Initialize-Commands";
@@ -193,12 +193,13 @@ function CreateCommands{
         $null=New-Item -Path $ShellCmdPath -Value "-" -Force
         $null=New-Item -Path $CommandPath -Value "$exec" -Force 
          if($AddSeparator){$null=New-RegistryValue $ShellCmdPath "CommandFlags" 00000040 dword ; continue ;}
-        $null=New-RegistryValue $ShellCmdPath "Icon" $ico String
-        $null=New-RegistryValue $ShellCmdPath "MUIVerb" $verb String
+        $null=New-RegistryValue $ShellCmdPath "Icon" "$ico" String
+        $null=New-RegistryValue $ShellCmdPath "MUIVerb" "$verb" String
         write-host -f DarkGreen "ok";
     }
 
-    CreateMenu -SubCommands "$SubCommands" -Verb "Windows &Terminal" -Icon "C:\DOCUMENTS\PowerShell\Module-Development\PowerShell.Module.Terminal\ico\WOOD-TERMINAL.ico" 
+    $RelPath="C:\Users\guillaumep\Documents\PowerShell\Module-Development\PowerShell.Module.Terminal\ico"
+    CreateMenu -SubCommands "$SubCommands" -Verb "Windows &Terminal" -Icon "$RelPath\WOOD-TERMINAL.ico" 
 }
 
 
@@ -211,8 +212,8 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
     Exit
 }
 
-$Script:CurrentPath=$PSScriptRoot
-$Script:TermScript = (Resolve-Path -Path "$Script:CurrentPath\..\src\Terminal.ps1").Path
+$Script:CurrentPath="C:\Users\guillaumep\Documents\PowerShell\Module-Development\PowerShell.Module.Terminal"
+$Script:TermScript = "C:\Users\guillaumep\Documents\PowerShell\Module-Development\PowerShell.Module.Terminal\src\Terminal.ps1"
 if(-not(Test-Path -Path $Script:TermScript)){
     write-error "cannot find script 'Terminal.ps1'"
     return
