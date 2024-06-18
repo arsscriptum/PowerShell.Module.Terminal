@@ -1,10 +1,7 @@
-
-<#
-#̷𝓍   𝓐𝓡𝓢 𝓢𝓒𝓡𝓘𝓟𝓣𝓤𝓜
-#̷𝓍   🇵​​​​​🇴​​​​​🇼​​​​​🇪​​​​​🇷​​​​​🇸​​​​​🇭​​​​​🇪​​​​​🇱​​​​​🇱​​​​​ 🇸​​​​​🇨​​​​​🇷​​​​​🇮​​​​​🇵​​​​​🇹​​​​​ 🇧​​​​​🇾​​​​​ 🇬​​​​​🇺​​​​​🇮​​​​​🇱​​​​​🇱​​​​​🇦​​​​​🇺​​​​​🇲​​​​​🇪​​​​​🇵​​​​​🇱​​​​​🇦​​​​​🇳​​​​​🇹​​​​​🇪​​​​​.🇶​​​​​🇨​​​​​@🇬​​​​​🇲​​​​​🇦​​​​​🇮​​​​​🇱​​​​​.🇨​​​​​🇴​​​​​🇲​​​​​
-#>
-
-
+###
+#
+# Configure My terminal so that I can start it with contect menu
+#
 
 [CmdletBinding(SupportsShouldProcess)]
 param (
@@ -18,7 +15,7 @@ function Remove-OldValues
     param ()
     try {
         Write-Host "Cleaning up..."
-        $RegistryPath = "HKCU:\SOFTWARE\Classes\Directory\shell\Custom Shell Commands"
+        $RegistryPath = "HKLM:\SOFTWARE\Classes\Directory\shell\Custom Shell Commands"
         $null=Remove-Item -Path $RegistryPath  -Force -EA Ignore | Out-Null
        
         $Commands = InitializeCommands 'nul'
@@ -103,7 +100,7 @@ function InitializeCommands{
     $ValueCmd="$PwshExe -w Minimized -nol -nop -c `"& { Start-Process -FilePath `"pwsh.exe`" -ArgumentList ' -w Minimized -nol -nop -c `"& { $InvokeTermScript"
     
     write-host "InitializeCommands`nCmd: $ValueCmd " -f DarkBlue
-    $IconPath = "C:\Users\guillaumep\Documents\PowerShell\Module-Development\PowerShell.Module.Terminal\ico"
+    $IconPath = "C:\Users\$ENV:USERNAME\Documents\PowerShell\Module-Development\PowerShell.Module.Terminal\ico"
     $Index = 1
     $TerminalCommands = [System.Collections.ArrayList]::new()
     write-verbose "Initialize-Commands";
@@ -145,7 +142,7 @@ function CreateMenu
     try {
         write-verbose "Create-Menu";
         
-        $RegistryPath = "HKCU:\SOFTWARE\Classes\Directory\shell\Custom Shell Commands"
+        $RegistryPath = "HKLM:\SOFTWARE\Classes\Directory\shell\Custom Shell Commands"
         $null=New-Item -Path $RegistryPath  -Force | Out-Null
         $null=New-RegistryValue $RegistryPath "Icon" $Icon String
         $null=New-RegistryValue $RegistryPath "MUIVerb" $Verb String
@@ -198,7 +195,7 @@ function CreateCommands{
         write-host -f DarkGreen "ok";
     }
 
-    $RelPath="C:\Users\guillaumep\Documents\PowerShell\Module-Development\PowerShell.Module.Terminal\ico"
+    $RelPath="C:\Users\$ENV:USERNAME\Documents\PowerShell\Module-Development\PowerShell.Module.Terminal\ico"
     CreateMenu -SubCommands "$SubCommands" -Verb "Windows &Terminal" -Icon "$RelPath\WOOD-TERMINAL.ico" 
 }
 
@@ -212,8 +209,8 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
     Exit
 }
 
-$Script:CurrentPath="C:\Users\guillaumep\Documents\PowerShell\Module-Development\PowerShell.Module.Terminal"
-$Script:TermScript = "C:\Users\guillaumep\Documents\PowerShell\Module-Development\PowerShell.Module.Terminal\src\Terminal.ps1"
+$Script:CurrentPath="C:\Users\$ENV:USERNAME\Documents\PowerShell\Module-Development\PowerShell.Module.Terminal"
+$Script:TermScript = "C:\Users\$ENV:USERNAME\Documents\PowerShell\Module-Development\PowerShell.Module.Terminal\src\Terminal.ps1"
 if(-not(Test-Path -Path $Script:TermScript)){
     write-error "cannot find script 'Terminal.ps1'"
     return
