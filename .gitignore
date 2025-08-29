@@ -17,4 +17,6 @@ out/*
 *.psproj
 CustomMenu.inf*tempPoint*
 build-tools/generated/
-build-tools/generated/*
+build-tools/generated/*# sublime text temporary file pspp
+*.pspp
+
